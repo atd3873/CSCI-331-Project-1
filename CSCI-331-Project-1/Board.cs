@@ -86,9 +86,9 @@ namespace CSCI_331_Project_1
             {
                 return diagTBWinner;
             }
-            if (diagTBWinner != null)
+            if (diagBTWinner != null)
             {
-                return diagTBWinner;
+                return diagBTWinner;
             }
             if (tie != null)
             {

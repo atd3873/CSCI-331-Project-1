@@ -10,16 +10,13 @@ namespace CSCI_331_Project_1
     {
         static void Main(string[] args)
         {
-            Board b = new Board();
-            
 
-            Console.WriteLine(b.ToString());
+            Player p1 = new HumanPlayer();
+            Player p2 = new HumanPlayer();
 
-            b.insertPiece(6, new Piece("Y"));
-            Console.WriteLine(b.ToString());
-            Console.WriteLine(b.checkWinnerDiagBT());
-
-
+            Engine e = new Engine(p1, p2);
+            Console.WriteLine("game starting");
+            e.playGame();
             Console.ReadLine();
         }
     }
