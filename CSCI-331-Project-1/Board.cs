@@ -77,10 +77,40 @@ namespace CSCI_331_Project_1
             if (board[5, 3] == null) { return 3; }
             else {
 
-                Random random = new Random();
-                int randomnumber = random.Next(0, moves.Count());
+                List<int> badmoves = new List<int>();
+                List<int> goodmoves = new List<int>();
+                for (var i = 0; i < moves.Count(); i++)
+                {
+                    var move = moves[i];
 
-                return moves[randomnumber];
+                    Piece[,] tempboard = copyGrid();
+                    insertPiece(move, chip, tempboard);
+                    Boolean BadMove = CheckForWin(board, new Piece(chip.Opponent, chip.Team), move);
+
+                    if (BadMove == true) 
+                    {     
+                        badmoves.Add(move); 
+                    } else 
+                    {
+                        goodmoves.Add(move);
+                    }
+
+                }
+
+                if (goodmoves.Count() != 0)
+                {
+
+                    Random random = new Random();
+                    int randomnumber = random.Next(0, goodmoves.Count());
+
+                    return goodmoves[randomnumber];
+
+                }
+                else
+                {
+                    return badmoves[0];
+                }
+                
             }
         }
 
