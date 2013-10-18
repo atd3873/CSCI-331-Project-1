@@ -62,6 +62,8 @@ namespace CSCI_331_Project_1
         public int CPUMove(Piece chip, Piece[,] board){
         
             List<int> moves = PossibleMoves(board);
+
+            if (moves.Count == 0) { return 0; }
             for(var i = 0; i<moves.Count(); i++){
 		        var move = moves[i];
 		        if(CheckForWin(board,chip, move)){
@@ -78,11 +80,8 @@ namespace CSCI_331_Project_1
                 Random random = new Random();
                 int randomnumber = random.Next(0, moves.Count());
 
-                return randomnumber;
-            
+                return moves[randomnumber];
             }
-
-        
         }
 
 
@@ -92,7 +91,7 @@ namespace CSCI_331_Project_1
 
             for(int col=0; col<7; col++){
 		        
-			        if(board[5,col] == null){int move=col; moves.Add(move);break;}	
+			        if(board[0,col] == null){int move=col; moves.Add(move);}	
 		        
 	        }
 

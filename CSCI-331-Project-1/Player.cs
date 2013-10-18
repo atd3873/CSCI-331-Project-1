@@ -7,7 +7,7 @@ namespace CSCI_331_Project_1
 {
     abstract class Player
     {
-
+        public Boolean random;
         public String playername;
         public Board board;
         public Piece chip;

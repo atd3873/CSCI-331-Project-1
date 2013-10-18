@@ -22,8 +22,15 @@ namespace CSCI_331_Project_1
             String playername1 = Console.ReadLine();
 
             if (response1 == "AI")
-            {   
+            {
+
                 p1 = new AIPlayer(playername1);
+                Console.WriteLine("Random? (Y/N)");
+                String input = Console.ReadLine();
+                if (input == "Y" || input == "y") {
+                    p1.random = true;
+                }
+
             }
             else 
             {
@@ -37,6 +44,13 @@ namespace CSCI_331_Project_1
             if (response2 == "AI")
             {
                 p2 = new AIPlayer(playername2);
+
+                Console.WriteLine("Random? (Y/N)");
+                String input = Console.ReadLine();
+                if (input == "Y" || input == "y")
+                {
+                    p2.random = true;
+                }
             }
             else
             {
@@ -46,6 +60,7 @@ namespace CSCI_331_Project_1
             Engine e = new Engine(p1, p2);
             Console.WriteLine("Game starting...");
             e.playGame(p1, p2);
+            Console.WriteLine("Press Any Key to Exit.");
             Console.ReadLine();
         }
     }

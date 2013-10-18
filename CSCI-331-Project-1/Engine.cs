@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace CSCI_331_Project_1
 {
@@ -16,6 +17,9 @@ namespace CSCI_331_Project_1
         public int ConnectN { get; private set; }
         public Board board;
 
+        public int turnCount = 0;
+        public double CompletionTime = 0;
+
 
         public Engine(Player p1, Player p2, int width = 7, int height = 6, int connectN = 4)
         {
@@ -27,10 +31,13 @@ namespace CSCI_331_Project_1
             board = new Board(Width,Height,ConnectN);
 
             if (player1 is AIPlayer) { player1.board = board; }
+            if (player2 is AIPlayer) { player2.board = board; }
         }
 
         public void playGame(Player p1, Player p2)
         {
+            Stopwatch s = new Stopwatch();
+            s.Start();
             Boolean winner = false;
             int move;
             
@@ -42,6 +49,7 @@ namespace CSCI_331_Project_1
 
             while (true)
             {
+                turnCount++;
                 Player first;
                 Player second;
 
@@ -62,7 +70,7 @@ namespace CSCI_331_Project_1
                 }
 
                 if (first is HumanPlayer) { Console.WriteLine(first.playername + ", Please choose a slot (0-6) to drop your chip:"); }
-                else { Console.WriteLine(first.playername + "moves..."); }
+                else { Console.WriteLine(first.playername + " moves..."); }
                 move = first.getmove();
                 board.insertPiece(move, new Piece("B", "W"), board._grid);
                 Console.WriteLine(board.ToString());
@@ -75,7 +83,7 @@ namespace CSCI_331_Project_1
                 }
 
                 if (second is HumanPlayer) { Console.WriteLine(second.playername+", Please choose a slot (0-6) to drop your chip:"); }
-                else { Console.WriteLine(second.playername + "moves..."); }
+                else { Console.WriteLine(second.playername + " moves..."); }
                 move = second.getmove();
                 board.insertPiece(move, new Piece("W","B"), board._grid);
                 Console.WriteLine(board.ToString());
@@ -87,7 +95,18 @@ namespace CSCI_331_Project_1
                     break;
                 }
 
+                if (turnCount == 42) {
+
+                    Console.WriteLine("It's a Draw.");
+                    break;
+                
+                }
             }
+
+            s.Stop();
+            CompletionTime = s.ElapsedMilliseconds;
+            Console.WriteLine("Game Completed in " + turnCount + " turns / " + CompletionTime + " ms");
+
         }
 
 

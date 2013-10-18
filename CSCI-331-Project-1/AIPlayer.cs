@@ -10,7 +10,7 @@ namespace CSCI_331_Project_1
     class AIPlayer : Player
     {
 
-        
+        public Boolean random = false;
 
         public AIPlayer(String n) {
 
@@ -30,7 +30,22 @@ namespace CSCI_331_Project_1
 
         public override int getmove() {
 
-            return board.CPUMove(chip, board._grid);
+            if (random)
+            {
+
+                List<int> moves = board.PossibleMoves(board._grid);
+                Random r = new Random();
+                int randomnumber = r.Next(0, moves.Count());
+                return moves[randomnumber];
+
+            }
+            else {
+
+                return board.CPUMove(chip, board._grid);
+            
+            }
+
+            
             
         }
 
