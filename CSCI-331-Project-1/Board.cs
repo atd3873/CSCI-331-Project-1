@@ -12,7 +12,9 @@ namespace CSCI_331_Project_1
         public int Height { get; private set; }
         public int NumToWin { get; private set; }
 
-        private Piece[,] _grid;
+        public Piece[,] _grid;
+
+        public int[,] board = new int[,] {{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0}};
 
 
         public Board(int width = 7, int height = 6, int numToWin = 4)
@@ -23,7 +25,7 @@ namespace CSCI_331_Project_1
             _grid = new Piece[Height, Width];
         }
 
-        public Boolean insertPiece(int location, Piece pieceToPlace)
+        public Boolean insertPiece(int location, Piece pieceToPlace, Piece[,]board)
         {
             if (location >= Width)
             {
@@ -31,75 +33,90 @@ namespace CSCI_331_Project_1
             }
 
             //top of board is full
-            if (_grid[0, location] != null)
+            if (board[0, location] != null)
             {
                 return false;
             }
 
             //bottom of board is empty
-            if (_grid[Height - 1, location] == null)
+            if (board[Height - 1, location] == null)
             {
-                _grid[Height - 1, location] = pieceToPlace;
+                board[Height - 1, location] = pieceToPlace;
                 return true;
             }
 
             for (int r = 1; r < Height; r++)
             {
-                if (_grid[r, location] != null)
+                if (board[r, location] != null)
                 {
-                    _grid[r - 1, location] = pieceToPlace;
+                    board[r - 1, location] = pieceToPlace;
                     return true;
                 }
-
-
             }
-
-
-
 
             return false;
 
         }
 
+        public List<int> PossibleMoves(Piece[,] board) {
 
+            List<int> moves = new List<int>();
 
+            for(int col=0; col<7; col++){
+		        for(int row=Width-1;row>-1; row--){
+			        if(board[row,col] == null){int move=col; moves.Add(move);break;}	
+		        }
+	        }
 
+            return moves;
+        }
 
-        public String checkWinner()
-        {
-            string verticalWinner = checkWinnerVertical();
-            string horizontalWinner = checkWinnerHorizontal();
-            string diagTBWinner = checkWinnerDiagTB();
-            string diagBTWinner = checkWinnerDiagBT();
-            string tie = checkTie();
-
-            if (verticalWinner != null)
-            {
-                return verticalWinner;
+        public Piece[,] copyGrid(){
+        
+            Piece[,] tempboard = new Piece[Height, Width];
+            
+            for(int row = 0; row < Width; row++){
+            
+                for(int col = 0; col<Height; col++){
+                
+                    tempboard[row,col] = _grid[row,col];
+                }
             }
-            if (horizontalWinner != null)
-            {
-                return horizontalWinner;
-            }
-
-            if (diagTBWinner != null)
-            {
-                return diagTBWinner;
-            }
-            if (diagBTWinner != null)
-            {
-                return diagBTWinner;
-            }
-            if (tie != null)
-            {
-                return tie;
-            }
-            return null;
-
+            return tempboard;
+        
         }
 
 
-        public String checkWinnerVertical()
+        public Boolean CheckForWin(Piece[,] board, Piece chip, int move){
+        
+            Piece[,] tempboard = copyGrid();
+
+            insertPiece(move, chip, tempboard);
+
+            Boolean win = checkWinner(tempboard);
+
+            if (win) { return true; } else { return false; }
+        
+        }
+
+
+        public Boolean checkWinner(Piece[,] board)
+        {
+            if (checkWinnerVertical(board) ||
+                checkWinnerHorizontal(board) ||
+                checkWinnerDiagTB(board) ||
+                checkWinnerDiagBT(board))
+            {
+
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+
+        public Boolean checkWinnerVertical(Piece[,] board)
         {
             //returns the winner string if theres a winner if not it reurn null
 
@@ -108,28 +125,28 @@ namespace CSCI_331_Project_1
                 for (int r = 0; r < Height + 1 - NumToWin; r++)
                 {
                     string cur = null;
-                    if (_grid[r, c] != null)
+                    if (board[r, c] != null)
                     {
-                        cur = _grid[r, c].Team;
+                        cur = board[r, c].Team;
                     }
                     int curCount = 0;
                     for (int off = 0; off < NumToWin; off++)
                     {
-                        if ((_grid[r + off, c] != null) && (cur != null) && cur.Equals(_grid[r + off, c].Team))
+                        if ((board[r + off, c] != null) && (cur != null) && cur.Equals(board[r + off, c].Team))
                         {
                             curCount++;
                         }
                         if (curCount == NumToWin)
                         {
-                            return cur + " won in column " + c;
+                            return true;
                         }
                     }
                 }
             }
-            return null;
+            return false;
         }
 
-        public String checkWinnerHorizontal()
+        public Boolean checkWinnerHorizontal(Piece[,] board)
         {
             //returns the winner string if theres a winner if not it reurn null
             for (int r = 0; r < Height; r++)
@@ -137,28 +154,28 @@ namespace CSCI_331_Project_1
                 for (int c = 0; c < Width + 1 - NumToWin; c++)
                 {
                     string cur = null;
-                    if (_grid[r, c] != null)
+                    if (board[r, c] != null)
                     {
-                        cur = _grid[r, c].Team;
+                        cur = board[r, c].Team;
                     }
                     int curCount = 0;
                     for (int off = 0; off < NumToWin; off++)
                     {
-                        if ((_grid[r, c + off] != null) && (cur != null) && cur.Equals(_grid[r, c + off].Team))
+                        if ((board[r, c + off] != null) && (cur != null) && cur.Equals(board[r, c + off].Team))
                         {
                             curCount++;
                         }
                         if (curCount == NumToWin)
                         {
-                            return cur + " won in row " + r;
+                            return true;
                         }
                     }
                 }
             }
-            return null;
+            return false;
         }
 
-        public String checkWinnerDiagTB()
+        public Boolean checkWinnerDiagTB(Piece[,] board)
         {
             //returns the winner string if theres a winner if not it reurn null
             for (int r = 0; r < Height + 1 - NumToWin; r++)
@@ -166,28 +183,28 @@ namespace CSCI_331_Project_1
                 for (int c = 0; c < Width + 1 - NumToWin; c++)
                 {
                     string cur = null;
-                    if (_grid[r, c] != null)
+                    if (board[r, c] != null)
                     {
-                        cur = _grid[r, c].Team;
+                        cur = board[r, c].Team;
                     }
                     int curCount = 0;
                     for (int off = 0; off < NumToWin; off++)
                     {
-                        if ((_grid[r + off, c + off] != null) && (cur != null) && cur.Equals(_grid[r + off, c + off].Team))
+                        if ((board[r + off, c + off] != null) && (cur != null) && cur.Equals(board[r + off, c + off].Team))
                         {
                             curCount++;
                         }
                         if (curCount == NumToWin)
                         {
-                            return cur + " won on a diagonal";
+                            return true;
                         }
                     }
                 }
             }
-            return null;
+            return false;
         }
 
-        public String checkWinnerDiagBT()
+        public Boolean checkWinnerDiagBT(Piece[,] board)
         {
             //returns the winner string if theres a winner if not it reurn null
             for (int r = NumToWin-1; r < Height; r++)
@@ -195,46 +212,46 @@ namespace CSCI_331_Project_1
                 for (int c = 0; c < Width + 1 - NumToWin; c++)
                 {
                     string cur = null;
-                    if (_grid[r, c] != null)
+                    if (board[r, c] != null)
                     {
-                        cur = _grid[r, c].Team;
+                        cur = board[r, c].Team;
                     }
                     int curCount = 0;
                     for (int off = 0; off < NumToWin; off++)
                     {
-                        if ((_grid[r - off, c + off] != null) && (cur != null) && cur.Equals(_grid[r - off, c + off].Team))
+                        if ((board[r - off, c + off] != null) && (cur != null) && cur.Equals(board[r - off, c + off].Team))
                         {
                             curCount++;
                         }
                         if (curCount == NumToWin)
                         {
-                            return cur + " won on a diagonal";
+                            return true;
                         }
                     }
                 }
             }
-            return null;
+            return false;
         }
 
 
         //If the board is full return tie string, else return null
 
-        public String checkTie()
+        public Boolean checkTie(Piece[,] board)
         {
             //returns that there was not a winner, if there are still empty spaces it retuns null
             for (int r = 0; r < Height; r++)
             {
                 for (int c = 0; c < Width ; c++)
                 {
-                    if (_grid[r, c] == null)
+                    if (board[r, c] == null)
                     {
-                        return null;
+                        return false;
                     }
                  
                  
                 }
             }
-            return "Its a tie, no one wins";
+            return true;
         }
 
 

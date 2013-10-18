@@ -34,7 +34,7 @@ namespace CSCI_331_Project_1
             String response2 = Console.ReadLine();
             Console.WriteLine("Name: ");
             String playername2 = Console.ReadLine();
-            if (response1 == "AI")
+            if (response2 == "AI")
             {
                 p2 = new AIPlayer(playername2);
             }

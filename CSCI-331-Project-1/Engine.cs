@@ -14,7 +14,7 @@ namespace CSCI_331_Project_1
         public int Width { get; private set; }
         public int Height { get; private set; }
         public int ConnectN { get; private set; }
-        private Board board;
+        public Board board;
 
 
         public Engine(Player p1, Player p2, int width = 7, int height = 6, int connectN = 4)
@@ -29,7 +29,7 @@ namespace CSCI_331_Project_1
 
         public void playGame(Player p1, Player p2)
         {
-            string winner = null;
+            Boolean winner = false;
             int move;
             
             Console.WriteLine(board.ToString());
@@ -58,26 +58,26 @@ namespace CSCI_331_Project_1
                 if (first is HumanPlayer) { Console.WriteLine(first.playername + ", Please choose a slot (0-6) to drop your chip:"); }
                 else { Console.WriteLine(first.playername + "moves..."); }
                 move = first.getmove();
-                board.insertPiece(move, new Piece("B"));
+                board.insertPiece(move, new Piece("B"), board._grid);
                 Console.WriteLine(board.ToString());
-                winner = board.checkWinner();
+                winner = board.checkWinner(board._grid);
                 first.update(move);
-                if (winner != null)
+                if (winner == true)
                 {
-                    Console.WriteLine(winner);
+                    Console.WriteLine(first.playername + "Won!");
                     break;
                 }
 
                 if (second is HumanPlayer) { Console.WriteLine(second.playername+", Please choose a slot (0-6) to drop your chip:"); }
                 else { Console.WriteLine(second.playername + "moves..."); }
                 move = second.getmove();
-                board.insertPiece(move, new Piece("W"));
+                board.insertPiece(move, new Piece("W"), board._grid);
                 Console.WriteLine(board.ToString());
-                winner = board.checkWinner();
+                winner = board.checkWinner(board._grid);
                 second.update(move);
-                if (winner != null)
+                if (winner == true)
                 {
-                    Console.WriteLine(winner);
+                    Console.WriteLine(second.playername + "Won!");
                     break;
                 }
 
