@@ -27,30 +27,54 @@ namespace CSCI_331_Project_1
             board = new Board(Width,Height,ConnectN);
         }
 
-        public void playGame()
+        public void playGame(Player p1, Player p2)
         {
             string winner = null;
             int move;
+            
+            Console.WriteLine(board.ToString());
+
+            //Need to choose randomly who goes first.
+            Random random = new Random();
+            int randomnumber = random.Next(1, 3);
+
             while (true)
             {
-                move = player1.getmove();
+                Player first;
+                Player second;
+
+                if (randomnumber == 1)
+                {
+                    //Player 1 goes first
+                    first = player1;
+                    second = player2;
+                }
+                else {
+                    //Player 2 goes first
+                    first = player2;
+                    second = player1;
+                }
+
+                if (first is HumanPlayer) { Console.WriteLine(first.playername + ", Please choose a slot (0-6) to drop your chip:"); }
+                else { Console.WriteLine(first.playername + "moves..."); }
+                move = first.getmove();
                 board.insertPiece(move, new Piece("B"));
                 Console.WriteLine(board.ToString());
                 winner = board.checkWinner();
-                player2.update(move);
+                first.update(move);
                 if (winner != null)
                 {
                     Console.WriteLine(winner);
                     break;
                 }
 
-
-
-                move = player2.getmove();
+                if (second is HumanPlayer) { Console.WriteLine(second.playername+", Please choose a slot (0-6) to drop your chip:"); }
+                else { Console.WriteLine(second.playername + "moves..."); }
+                move = second.getmove();
                 board.insertPiece(move, new Piece("W"));
                 Console.WriteLine(board.ToString());
                 winner = board.checkWinner();
-                player1.update(move);
+                second.update(move);
                 if (winner != null)
                 {
                     Console.WriteLine(winner);

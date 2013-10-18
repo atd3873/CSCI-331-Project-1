@@ -8,12 +8,22 @@ namespace CSCI_331_Project_1
 {
     class HumanPlayer : Player
     {
-        public int getmove()
+
+        public HumanPlayer(String name) {
+            playername = name;
+        }
+
+        public override String getName(){
+
+            return playername;
+        }
+
+        public override int getmove()
         {
            return  Convert.ToInt16(Console.ReadLine());
         }
 
-        public void update(int move)
+        public override void update(int move)
         {
         }
 

@@ -216,6 +216,9 @@ namespace CSCI_331_Project_1
             return null;
         }
 
+
+        //If the board is full return tie string, else return null
+
         public String checkTie()
         {
             //returns that there was not a winner, if there are still empty spaces it retuns null

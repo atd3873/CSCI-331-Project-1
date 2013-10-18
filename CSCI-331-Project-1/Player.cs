@@ -5,10 +5,14 @@ using System.Text;
 
 namespace CSCI_331_Project_1
 {
-    interface Player
+    abstract class Player
     {
-        int getmove();
 
-        void update(int move);
+        public String playername;
+        abstract public String getName();
+
+        abstract public int getmove();
+
+        abstract public void update(int move);
     }
 }
