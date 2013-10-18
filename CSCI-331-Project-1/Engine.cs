@@ -25,6 +25,8 @@ namespace CSCI_331_Project_1
             Height = height;
             ConnectN = connectN;
             board = new Board(Width,Height,ConnectN);
+
+            if (player1 is AIPlayer) { player1.board = board; }
         }
 
         public void playGame(Player p1, Player p2)
@@ -46,38 +48,42 @@ namespace CSCI_331_Project_1
                 if (randomnumber == 1)
                 {
                     //Player 1 goes first
+                    player1.chip = new Piece("B", "W");
                     first = player1;
+                    player2.chip = new Piece("W", "B");
                     second = player2;
                 }
                 else {
                     //Player 2 goes first
+                    player2.chip = new Piece("B", "W");
                     first = player2;
+                    player1.chip = new Piece("W", "B");
                     second = player1;
                 }
 
                 if (first is HumanPlayer) { Console.WriteLine(first.playername + ", Please choose a slot (0-6) to drop your chip:"); }
                 else { Console.WriteLine(first.playername + "moves..."); }
                 move = first.getmove();
-                board.insertPiece(move, new Piece("B"), board._grid);
+                board.insertPiece(move, new Piece("B", "W"), board._grid);
                 Console.WriteLine(board.ToString());
                 winner = board.checkWinner(board._grid);
                 first.update(move);
                 if (winner == true)
                 {
-                    Console.WriteLine(first.playername + "Won!");
+                    Console.WriteLine(first.playername + " won.");
                     break;
                 }
 
                 if (second is HumanPlayer) { Console.WriteLine(second.playername+", Please choose a slot (0-6) to drop your chip:"); }
                 else { Console.WriteLine(second.playername + "moves..."); }
                 move = second.getmove();
-                board.insertPiece(move, new Piece("W"), board._grid);
+                board.insertPiece(move, new Piece("W","B"), board._grid);
                 Console.WriteLine(board.ToString());
                 winner = board.checkWinner(board._grid);
                 second.update(move);
                 if (winner == true)
                 {
-                    Console.WriteLine(second.playername + "Won!");
+                    Console.WriteLine(second.playername + " won.");
                     break;
                 }
 

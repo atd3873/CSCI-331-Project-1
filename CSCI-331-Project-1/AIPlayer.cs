@@ -4,13 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace CSCI_331_Project_1
 {
     class AIPlayer : Player
     {
 
-        public AIPlayer(String name) {
-            playername = name;
+        
+
+        public AIPlayer(String n) {
+
+            playername = n;
+        }
+
+        public AIPlayer(String n, Board b, Piece c) {
+            playername = n;
+            board = b;
+            chip = c;
         }
 
         public override String getName()
@@ -20,11 +30,8 @@ namespace CSCI_331_Project_1
 
         public override int getmove() {
 
-
-
+            return board.CPUMove(chip, board._grid);
             
-
-            return 0;
         }
 
         public override void update(int move) { 

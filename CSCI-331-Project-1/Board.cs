@@ -14,7 +14,7 @@ namespace CSCI_331_Project_1
 
         public Piece[,] _grid;
 
-        public int[,] board = new int[,] {{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0}};
+        //public int[,] board = new int[,] {{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0},{0,0,0,0,0,0,0}};
 
 
         public Board(int width = 7, int height = 6, int numToWin = 4)
@@ -58,14 +58,42 @@ namespace CSCI_331_Project_1
 
         }
 
+
+        public int CPUMove(Piece chip, Piece[,] board){
+        
+            List<int> moves = PossibleMoves(board);
+            for(var i = 0; i<moves.Count(); i++){
+		        var move = moves[i];
+		        if(CheckForWin(board,chip, move)){
+			        return move;
+		        }	
+		        if(CheckForWin(board,new Piece(chip.Opponent, chip.Team), move)){
+			        return move;
+		        }	
+	        }
+
+            if (board[5, 3] == null) { return 3; }
+            else {
+
+                Random random = new Random();
+                int randomnumber = random.Next(0, moves.Count());
+
+                return randomnumber;
+            
+            }
+
+        
+        }
+
+
         public List<int> PossibleMoves(Piece[,] board) {
 
             List<int> moves = new List<int>();
 
             for(int col=0; col<7; col++){
-		        for(int row=Width-1;row>-1; row--){
-			        if(board[row,col] == null){int move=col; moves.Add(move);break;}	
-		        }
+		        
+			        if(board[5,col] == null){int move=col; moves.Add(move);break;}	
+		        
 	        }
 
             return moves;
@@ -75,9 +103,9 @@ namespace CSCI_331_Project_1
         
             Piece[,] tempboard = new Piece[Height, Width];
             
-            for(int row = 0; row < Width; row++){
+            for(int col = 0; col < Width; col++){
             
-                for(int col = 0; col<Height; col++){
+                for(int row = 0; row<Height; row++){
                 
                     tempboard[row,col] = _grid[row,col];
                 }
