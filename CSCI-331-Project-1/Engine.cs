@@ -34,7 +34,7 @@ namespace CSCI_331_Project_1
             if (player2 is AIPlayer) { player2.board = board; }
         }
 
-        public void playGame(Player p1, Player p2)
+        public int playGame(Player p1, Player p2)
         {
             Stopwatch s = new Stopwatch();
             s.Start();
@@ -78,8 +78,10 @@ namespace CSCI_331_Project_1
                 first.update(move);
                 if (winner == true)
                 {
+                    
                     Console.WriteLine(first.playername + " won.");
-                    break;
+                    return 1;
+                    
                 }
 
                 if (second is HumanPlayer) { Console.WriteLine(second.playername+", Please choose a slot (0-6) to drop your chip:"); }
@@ -92,13 +94,15 @@ namespace CSCI_331_Project_1
                 if (winner == true)
                 {
                     Console.WriteLine(second.playername + " won.");
-                    break;
+                    return 2;
+                   
                 }
 
                 if (turnCount == 42) {
 
                     Console.WriteLine("It's a Draw.");
-                    break;
+                    return 0;
+                    
                 
                 }
             }
